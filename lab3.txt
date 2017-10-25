@@ -177,10 +177,24 @@ select nazwa from klienci where nazwa like '%(rz|Rz)%' union select nazwa from c
 
 select idmeczu, ( select sum(s) from unnest(gospodarze) s) as gospodarze, ( select sum(s) from unnest(goscie) s) as goscie from siatkowka.statystyki;
 
+select idmeczu, (gospodarze[1]+gospodarze[2]+gospodarze[3]+coalesce(gospodarze[4],0)+coalesce(gospodarze[5],0)), (goscie[1]+goscie[2]+goscie[3]+coalesce(goscie[4],0)+coalesce(goscie[5],0)) from statystyki;
+
 3.6.2 dentyfikator meczu, sumę punktów zdobytych przez gospodarzy i sumę punktów zdobytych przez gości, dla meczów, które skończyły się po 5 setach i zwycięzca ostatniego seta zdobył ponad 15 punktów,
 
 select idmeczu, ( select sum(s) from unnest(gospodarze) s) as gospodarze, ( select sum(s) from unnest(goscie) s) as goscie from siatkowka.statystyki where gospodarze[5] is not null and (gospodarze[5] >15 or goscie[5] > 15);
 
+select idmeczu, (gospodarze[1]+gospodarze[2]+gospodarze[3]+coalesce(gospodarze[4],0)+coalesce(gospodarze[5],0)), (goscie[1]+goscie[2]+goscie[3]+coalesce(goscie[4],0)+coalesce(goscie[5],0)) from statystyki where gospodarze[5] != null and (gospodarze[5] > 15 or goscie[5] > 15);
+
 3.6.3 identyfikator i wynik meczu w formacie x:y, np. 3:1 (wynik jest pojedynczą kolumną – napisem),
-select idmeczu, as wynik from siatkowka.statystyki;
+
+select idmeczu ,((case when (gospodarze[1] > goscie[1]) then 1 else 0 end +
+case when (gospodarze[2] > goscie[2]) then 1 else 0 end +
+case when (gospodarze[3] > goscie[3]) then 1 else 0 end +
+case when (gospodarze[4] > goscie[4]) then 1 else 0 end +
+case when (gospodarze[5] > goscie[5]) then 1 else 0 end) || ':' ||
+(case when (gospodarze[1] < goscie[1]) then 1 else 0 end +
+case when (gospodarze[2] < goscie[2]) then 1 else 0 end +
+case when (gospodarze[3] < goscie[3]) then 1 else 0 end +
+case when (gospodarze[4] < goscie[4]) then 1 else 0 end +
+case when (gospodarze[5] < goscie[5]) then 1 else 0 end)) as wynik from statystyki;
 
