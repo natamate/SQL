@@ -1,0 +1,31 @@
+4.2.1
+select z.idzamowienia, z.datarealizacji, k.nazwa from zamowienia z natural join klienci k where k.nazwa like '% Antoni';  
+
+4.2.2
+select z.idzamowienia, z.datarealizacji, k.ulica from zamowienia z natural join klienci k where k.ulica like '%/%';
+
+4.2.3
+select z.idzamowienia, z.datarealizacji, k.miejscowosc from zamowienia z natural join klienci k where k.miejscowosc = 'Kraków' and date_part('month', z.datarealizacji) = 11 and date_part('years', z.datarealizacji) = 2013 ;
+
+4.3.1
+select k.nazwa, k.ulica, k.miejscowosc, z.datarealizacji from klienci k natural join zamowienia z where date_part('years', current_date) - date_part('years', z.datarealizacji) < 5;
+
+select k.nazwa, k.ulica, k.miejscowosc, z.datarealizacji from klienci k natural join zamowienia z where z.datarealizacji between '2013-10-31' and now();
+
+select k.nazwa, k.ulica, k.miejscowosc, z.datarealizacji from klienci k natural join zamowienia z where z.datarealizacji between (now() - interval '5 year') and now();
+
+4.3.2
+
+select k.nazwa, k.ulica, k.miejscowosc, p.nazwa from (artykuly a natural join pudelka p) join (zamowienia z natural join klienci k) on a.idzamowienia = z.idzamowienia where p.nazwa in ('Kremowa fantazja', 'Kolekcja jesienna');
+
+4.3.3
+select k.nazwa, k.ulica, k.miejscowosc, z.idzamowienia from klienci k inner join zamowienia z on k.idklienta = z.idklienta;
+
+4.3.4
+select k.nazwa, k.ulica, k.miejscowosc, z.idzamowienia from zamowienia z inner join klienci k on k.idklienta = z.idklienta where k.idklienta is null;
+
+4.5.5
+wszystkie pudelka except pudelka z chociaz jedna gorzka czekoladka
+
+4.6.1
+select a.idczekoladki, b.idczekoladki from czekoladki a join czekoladki b on (b.idczekoladki = 'd08' and b.koszt < a.koszt);
