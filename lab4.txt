@@ -19,7 +19,7 @@ select k.nazwa, k.ulica, k.miejscowosc, z.datarealizacji from klienci k natural 
 select k.nazwa, k.ulica, k.miejscowosc, p.nazwa from (artykuly a natural join pudelka p) join (zamowienia z natural join klienci k) on a.idzamowienia = z.idzamowienia where p.nazwa in ('Kremowa fantazja', 'Kolekcja jesienna');
 
 4.3.3
-select k.nazwa, k.ulica, k.miejscowosc, z.idzamowienia from klienci k inner join zamowienia z on k.idklienta = z.idklienta;
+select k.nazwa, k.ulica, k.miejscowosc, z.idzamowienia from klienci k inner (join) zamowienia z on k.idklienta = z.idklienta;
 
 4.3.4
 select k.nazwa, k.ulica, k.miejscowosc, z.idzamowienia from zamowienia z inner join klienci k on k.idklienta = z.idklienta where k.idklienta is null;
