@@ -24,6 +24,17 @@ select k.nazwa, k.ulica, k.miejscowosc, z.idzamowienia from klienci k inner (joi
 4.3.4
 select k.nazwa, k.ulica, k.miejscowosc, z.idzamowienia from zamowienia z inner join klienci k on k.idklienta = z.idklienta where k.idklienta is null;
 
+4.3.5
+select k.nazwa, k.ulica, k.miejscowosc, z.datarealizacji from klienci k join zamowienia z on z.idklienta = k.idklienta where date_part('year', z.datarealizacji ) = 2013 and date_part('month', z.datarealizacji) = 11;
+
+4.3.6
+
+4.4.1 
+select p.nazwa, p.opis, c. nazwa, c.opis from (pudelka p join zawartosc z on p.idpudelka  = z.idpudelka ) join czekoladki c on c.idczekoladki = z.idczekoladki;
+
+4.4.2
+select p.idpudelka, p.nazwa, p.opis, c. nazwa, c.opis from (pudelka p join zawartosc z on p.idpudelka  = z.idpudelka ) join czekoladki c on c.idczekoladki = z.idczekoladki where p.idpudelka = 'heav';
+
 4.5.5
 wszystkie pudelka except pudelka z chociaz jedna gorzka czekoladka
 
