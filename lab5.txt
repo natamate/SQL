@@ -1,0 +1,79 @@
+ Napisz zapytanie w języku SQL wyświetlające informacje na temat:
+
+    łącznej liczby czekoladek w bazie danych,
+
+	select count(*) from czekoladki;
+
+    łącznej liczby czekoladek z nadzieniem (na 2 sposoby) - podpowiedź: count(*), count(nazwaKolumny),
+	select count(*) from czekoladki where nadzienie is not null;
+
+	select count(idczekoladki) from czekoladki where nadzienie is not null;
+ 
+    pudełka, w którym jest najwięcej czekoladek (uwaga: konieczne jest użycie LIMIT),
+	
+	select idpudelka, sum(sztuk) as suma from pudelka natural join zawartosc group by idpudelka order by suma desc limit 1;
+
+    ★ łącznej liczby czekoladek w poszczególnych pudełkach,
+	
+	select idpudelka, sum(sztuk) from pudelka natural join zawartosc group by idpudelka; 
+
+    ★ łącznej liczby czekoladek bez orzechów w poszczególnych pudełkach,
+	select idpudelka, sum(sztuk) from pudelka natural join zawartosc join czekoladki using (idczekoladki) where orzechy is null group by idpudelka;
+
+    ★ łącznej liczby czekoladek w mlecznej czekoladzie w poszczególnych pudełkach.
+	select idpudelka, sum(sztuk) from pudelka natural join zawartosc join czekoladki using (idczekoladki) where czekolada like 'mleczna' group by idpudelka;
+
+ Napisz zapytanie w języku SQL wyświetlające informacje na temat:
+
+    masy poszczególnych pudełek,
+
+	select idpudelka, sum(sztuk*masa) as m from pudelka natural join zawartosc join czekoladki USING (idczekoladki) group by idpudelka order by m;
+
+    pudełka o największej masie,
+
+	select idpudelka, sum(sztuk*masa) as m from pudelka natural join zawartosc join czekoladki USING (idczekoladki) group by idpudelka order by m desc limit 1;
+
+	--liczy ile jest pudelek o najwiekszej masie
+	with masy_pudelek as (select idpudelka, sum(sztuk * masa) as masa_pudelka from zawartosc natural join czekoladki group by idpudelka)
+
+	select idpudelka, nazwa, masa_pudelka from masy_pudelek natural join pudelka where masa_pudelka = (select max(masa_pudelka) from masy_pudelek);
+
+    ★ średniej masy pudełka w ofercie cukierni,
+	select idpudelka, avg(sztuk*masa) as m from pudelka natural join zawartosc join czekoladki USING (idczekoladki) group by idpudelka order by m desc;
+
+    ★ średniej wagi pojedynczej czekoladki w poszczególnych pudełkach,
+		select idpudelka, (select avg(sztuk*masa)/sztuk as m from pudelka natural join zawartosc join czekoladki USING (idczekoladki)) from pudelka as masa group by idpudelka;
+
+ Napisz zapytanie w języku SQL wyświetlające informacje na temat:
+
+    liczby zamówień na poszczególne dni,
+	select count(*), datarealizacji from zamowienia group by datarealizacji;
+
+    łącznej liczby wszystkich zamówień,
+	select count(*) from zamowienia;
+
+    ★ łącznej wartości wszystkich zamówień,
+	select sum(sztuk*cena) from artykuly natural join pudelka; 
+    ★ klientów, liczby złożonych przez nich zamówień i łącznej wartości złożonych przez nich zamówień.
+
+
+
+Napisz zapytanie w języku SQL wyświetlające informacje na temat:
+
+    czekoladki, która występuje w największej liczbie pudełek,
+
+	select count(idczekoladki) as counter, idczekoladki from pudelka natural join zawartosc join czekoladki using (idczekoladki)  group by idczekoladki order by counter;
+
+    pudełka, które zawiera najwięcej czekoladek bez orzechów,
+    ★ czekoladki, która występuje w najmniejszej liczbie pudełek,
+    ★ pudełka, które jest najczęściej zamawiane przez klientów.
+
+zysk ze sprzedazy POSZCZEGOLNYCH pudelek
+	
+5.8
+select p1.idpudelka, (select count(*) from pudelka p2 where p2.idpudelka <= p1.idpudelka) from pudelka p1 order by p1.idpudelka;
+
+
+
+
+
