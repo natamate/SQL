@@ -33,6 +33,25 @@ select nazwa, ulica, miejscowosc from klienci where nazwa not in (select nazwa f
 10.4.1
 select nazwa, opis, cena from pudelka natural join zawartosc  where idczekoladki in (select idczekoladki from czekoladki where idczekoladki like 'd09');
 
+10.4.2 zaw czekoladki gorzka truskawkowa 
+select p.nazwa, c.nazwa, p.cena from pudelka p natural join zawartosc join czekoladki c using(idczekoladki) where c.nazwa in (select nazwa from czekoladki where c.nazwa like 'Gorzka truskawkowa');
+
+10.4.3 
+zawierają przynajmniej jedną czekoladkę, której nazwa zaczyna się na S,
+
+select p.nazwa, c.nazwa, p.cena from pudelka p natural join zawartosc join czekoladki c using(idczekoladki) where c.nazwa in (select nazwa from czekoladki where c.nazwa like 'S%');
+
+10.4.4 zawierają przynajmniej 4 sztuki czekoladek jednego gatunku (o takim samym kluczu głównym),
+
+select p.nazwa, c.nazwa, p.cena from pudelka p natural join zawartosc join czekoladki c using(idczekoladki) where c.idczekoladki in (select idczekoladki from zawartosc natural join czekoladki where sztuk > 4);
+
+10.4.5 ★ zawierają co najmniej 3 sztuki czekoladki Gorzka truskawkowa,
+select p.nazwa, c.nazwa, p.cena from pudelka p natural join zawartosc join czekoladki c using(idczekoladki) where c.nazwa in (select nazwa from czekoladki where c.nazwa like 'Gorzka truskawkowa') and sztuk >= 3;
+
+★ zawierają czekoladki z nadzieniem truskawkowym,
+10.4.6
+select p.nazwa, c.nazwa, p.cena from pudelka p natural join zawartosc join czekoladki c using(idczekoladki) where c.nazwa in (select nazwa from czekoladki where nadzienie like 'truskawki');
+
 10.4.7 nie zaw czekoladek w gorzkiej czekoladzie
 select p.nazwa, p.opis, p.cena from pudelka p natural join zawartosc z where p.nazwa not in (select p.nazwa from pudelka p natural join zawartosc z join czekoladki c using (idczekoladki) where c.czekolada = 'gorzka');
 
