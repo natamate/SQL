@@ -68,6 +68,14 @@ Wyświetl wartości kluczy głównych oraz nazwy czekoladek, których koszt jest
 
 select idczekoladki, nazwa from czekoladki where koszt > (select koszt from czekoladki where idczekoladki like 'd08');
 
+10.5.2 
+ Kto (nazwa klienta) złożył zamówienia na takie same czekoladki (pudełka) jak zamawiała Gorka Alicja.
+ select distinct k.nazwa from klienci k natural join zamowienia natural join artykuly join pudelka p using (idpudelka) where p.nazwa in (select p.nazwa from klienci k natural join zamowienia natural join artykuly join pudelka p using (idpudelka) where k.nazwa like 'Górka Alicja');
+ 
+ 10.5.3
+ Kto (nazwa klienta, adres) złożył zamówienia na takie same czekoladki (pudełka) jak zamawiali klienci z Katowic.
+select distinct k.nazwa from klienci k natural join zamowienia natural join artykuly join pudelka p using (idpudelka) where p.nazwa in (select p.nazwa from klienci k natural join zamowienia natural join artykuly join pudelka p using (idpudelka) where k.miejscowosc like 'Katowice');
+
 10.6.1
 pudełka o największej liczbie czekoladek (bez użycia klauzuli limit),
 
