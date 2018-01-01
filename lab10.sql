@@ -18,6 +18,18 @@ select nazwa, ulica, miejscowosc from klienci natural join zamowienia where data
 
 select k.nazwa, k.ulica, k.miejscowosc, p.nazwa from klienci k natural join zamowienia natural join artykuly join pudelka p using (idpudelka) where p.nazwa in (select nazwa from pudelka where nazwa in ('Kremowa fantazja', 'Kolekcja jesienna')); 
 
+10.3.4 zamówili co najmniej 2 sztuki pudełek Kremowa fantazja lub Kolekcja jesienna w ramach jednego zamówienia,
+select k.nazwa, k.ulica, k.miejscowosc, p.nazwa from klienci k natural join zamowienia natural join artykuly join pudelka p using (idpudelka) where p.nazwa in (select nazwa from pudelka where nazwa in ('Kremowa fantazja', 'Kolekcja jesienna')) and sztuk >= 2; 
+
+10.3.5 zamówili pudełka, które zawierają czekoladki z migdałami,
+select k.nazwa, k.ulica, k.miejscowosc, c.nazwa, c.orzechy from klienci k natural join zamowienia natural join artykuly join pudelka p using (idpudelka) natural join zawartosc join czekoladki c using (idczekoladki) where c.nazwa in (select nazwa from czekoladki where c.orzechy = 'migdały');
+
+10.3.6 złożyli przynajmniej jedno zamówienie,
+select nazwa, ulica, miejscowosc from klienci where idklienta in (select idklienta from zamowienia);
+
+10.3.7 nie złożyli żadnych zamówień.
+select nazwa, ulica, miejscowosc from klienci where nazwa not in (select nazwa from zamowienia);
+
 10.4.1
 select nazwa, opis, cena from pudelka natural join zawartosc  where idczekoladki in (select idczekoladki from czekoladki where idczekoladki like 'd09');
 
